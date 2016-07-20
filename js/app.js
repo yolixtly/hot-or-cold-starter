@@ -19,6 +19,7 @@ $(document).ready(function() {
         count = 0,
         pastGuesses=[],
         guessHtml,
+        alreadyGuessed,
         guessedFeedback,
         guessList = $('#guessList'),
         renderCount = $('#count'),
@@ -36,10 +37,14 @@ $(document).ready(function() {
 
     function newGame() {
         randomNumber();
-
+        resetNewGame();
+        render();
     }
-
+    //On load a new game starts: 
     newGame();
+
+    // On click on newGame, new game starts :
+    $('.new').click(newGame);
 
     // After user guesses correctly secret Number they can START A NEW GAME
     //ACTION: add functionality to button New Game : Reset all variable  
@@ -79,6 +84,7 @@ $(document).ready(function() {
         //Array of pastGuesses 
         groupGuesses();
 
+        //renders 
         render();
 
         return userGuess;
@@ -100,7 +106,19 @@ $(document).ready(function() {
             return true;
         }
 
-        // if input has already been guessed ?
+        // if input has already been guessed 
+        if(pastGuesses.length > 0){
+            $.each(pastGuesses,function(guess,value){
+                if(userGuess == value){
+                    alreadyGuessed = true;
+                }
+            }); //understand this block
+        }
+        if(alreadyGuessed){
+            alreadyGuessed = false;
+            alert('You guessed this number already');
+            return true;
+        }
 
         return false // if the input its valid, then checkInput is not important and we dont fire anything 
 
@@ -150,20 +168,12 @@ $(document).ready(function() {
     feedback.html(guessedFeedback);
    }
 
-
-
-
-
-   // guessList = $('#guestList'),
-   //      renderCount = $('#count'),
-   //      feedback = $('#feedback');
-
-
-
-
-    //Credit Functionality
-
-
-
+   function resetNewGame(){
+     count = 0;
+     pastGuesses = [];
+     guessHtml = '';
+     userGuess = '';
+     guessedFeedback = "Make your Guess!";
+   }
 
 });
