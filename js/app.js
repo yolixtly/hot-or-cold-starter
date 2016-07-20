@@ -29,7 +29,25 @@ function randomNumber() {
 
 randomNumber();
 // Fetch the value of input with Id = userGuess
+function guess() {
+  
+  // Returns the userGuess
+  $('form').submit(function(e){
+  e.preventDefault();
+  var userGuess = $('#userGuess').val();
+  console.log(userGuess);
 
+  //Resets the input value 
+  $('#userGuess').val('');
+  
+  return userGuess;
+
+});
+
+
+}
+
+guess();
 
 //Add validation for the input : make sure that is 
 // between 1 - 100
