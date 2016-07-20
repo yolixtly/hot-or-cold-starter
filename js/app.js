@@ -11,14 +11,16 @@ $(document).ready(function() {
         $(".overlay").fadeOut(1000);
     });
 
-    //Must functionality
+    /* Initializing Variables */
+
+    var userGuess;
 
     //when the page load a new game must be available . 
     //Make sure to call the function that start game 
 
 
 
-    //Generate Random Number from 1 to 100 -- inside a function
+    // DONE : Generate Random Number from 1 to 100 -- inside a function
 
     function randomNumber() {
         var secretNumber = Math.floor((Math.random() * 100) + 1);
@@ -27,50 +29,48 @@ $(document).ready(function() {
     }
 
     randomNumber();
+ 	
+ 	 // DONE : takes care of the form default behavior && runs the user guess 
+    $('form').submit(function(e) {
+        e.preventDefault();
+        guess();
 
-    // Fetch the value of input with Id = userGuess
+    });
+
+    // DONE : Fetch the value of input with Id = userGuess
     function guess() {
 
         // Returns the userGuess
-        $('form').submit(function(e) {
-            e.preventDefault();
-            var userGuess = $('#userGuess').val();
-            console.log(userGuess);
 
-            //Resets the input value 
-            $('#userGuess').val('');
+        userGuess = $('#userGuess').val();
 
-            return userGuess;
+        //Resets the input value 
+        $('#userGuess').val('');
 
-        });
+        if(checkInput()) {
+        	return ;
+        }
+
 
 
     }
     // this is the current guess value 
     guess();
 
-    //Add validation for the input : make sure that is 
-
-    
-     
-    // if input is === secret number 
-
+ 
+    // DONE : Add validation for the input : make sure that is 
     function checkInput() {
         // for inputs that are not between 1 - 100
-        if (userGuess <= 1 && userGuess >= 100) {
+        if (userGuess < 0 || userGuess > 100) {
             alert('Please enter a number between 1 and a 100');
             //this exits the checkInput function completly 
             return true;
-        } 
-        // for inputs that are not decimals  
-        if (userGuess == NaN) {
-        	alert('Please enter a number');
-        	return true;
         }
+
         // for decimal inputs 
-        if (userGuess % 1 !== 0) {
-        	alert('Please enter an integer with no decimals'); 
-        	return true;
+        else if (userGuess % 1 !== 0) {
+            alert('Please enter a Number!');
+            return true;
         }
 
         // if input has already been guessed ?
@@ -79,6 +79,8 @@ $(document).ready(function() {
 
     }
 
+
+    // if input is === secret number ??
 
     // The player gets feedback for each guess – "hot" 
     //if their guess was close, and "cold" if their guess was far 
