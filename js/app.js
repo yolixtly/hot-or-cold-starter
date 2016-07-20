@@ -15,7 +15,14 @@ $(document).ready(function() {
 
     var userGuess,
         secretNumber,
-        gapNumber;
+        gapNumber,
+        count = 0,
+        pastGuesses=[],
+        guessHtml,
+        guessedFeedback,
+        guessList = $('#guessList'),
+        renderCount = $('#count'),
+        feedback = $('#feedback');
 
     // DONE : takes care of the form default behavior && runs the user guess 
     $('form').submit(function(e) {
@@ -54,7 +61,6 @@ $(document).ready(function() {
 
         // Returns the userGuess
         userGuess = $('#userGuess').val();
-        console.log(userGuess);
 
         //Resets the input value 
         $('#userGuess').val('');
@@ -67,8 +73,15 @@ $(document).ready(function() {
         //gives feedback on hot & cold 
         getFeedback();
 
-        return userGuess;
+        //tracks how many user guesses
+        trackGuesses();
 
+        //Array of pastGuesses 
+        groupGuesses();
+
+        render();
+
+        return userGuess;
 
     }
 
@@ -97,19 +110,18 @@ $(document).ready(function() {
 // DONE: Gives user feedback if they are getting hot or cold.
     function getFeedback() {
         gapNumber = Math.abs(secretNumber - userGuess);
-
         if (secretNumber == userGuess) {
-            alert("you win!");
+            guessedFeedback = "you win!";
         } else if (gapNumber <= 10 && gapNumber >= 1) {
-            alert('you are very hot');
+            guessedFeedback = 'you are very hot';
         } else if (gapNumber <= 20 && gapNumber >= 11) {
-            alert('you are hot');
+            guessedFeedback = 'you are hot';
         } else if (gapNumber <= 30 && gapNumber >= 21) {
-            alert('you are warm');
+            guessedFeedback = 'you are warm';
         } else if (gapNumber <= 49 && gapNumber >= 39) {
-            alert(' you are cold');
+            guessedFeedback = 'you are cold';
         } else {
-            alert('you are very cold');
+            guessedFeedback = 'you are very cold';
         }
     }
 
@@ -117,13 +129,34 @@ $(document).ready(function() {
     // function that counts how many guess the user has tried for current game 
     // display that in span#count. Count be 0 by default;
 
+    function trackGuesses(){
+        count++;
+    }
+ // store guesses in : an array
+    function groupGuesses(){
+        pastGuesses.push(userGuess);
+        guessHtml = '';
+        $.each(pastGuesses, function(index, value){
+            guessHtml += '<li>' + value + '</li>';
+        });
+
+
+    }
 
     //render the past guesses in as an <li> to ul#guessList.
-    // store guesses in : an array
+   function render(){
+    guessList.html(guessHtml);
+    renderCount.html(count);
+    feedback.html(guessedFeedback);
+   }
 
 
 
 
+
+   // guessList = $('#guestList'),
+   //      renderCount = $('#count'),
+   //      feedback = $('#feedback');
 
 
 
