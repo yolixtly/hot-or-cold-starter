@@ -13,51 +13,65 @@ $(document).ready(function() {
 
     /* Initializing Variables */
 
-    var userGuess;
+    var userGuess,
+        secretNumber,
+        gapNumber;
 
-    //when the page load a new game must be available . 
-    //Make sure to call the function that start game 
-
-
-
-    // DONE : Generate Random Number from 1 to 100 -- inside a function
-
-    function randomNumber() {
-        var secretNumber = Math.floor((Math.random() * 100) + 1);
-        console.log(secretNumber);
-        return secretNumber;
-    }
-
-    randomNumber();
- 	
- 	 // DONE : takes care of the form default behavior && runs the user guess 
+    // DONE : takes care of the form default behavior && runs the user guess 
     $('form').submit(function(e) {
         e.preventDefault();
         guess();
 
     });
 
+    //when the page load a new game must be available . 
+    //Make sure to call the function that start game 
+
+    function newGame() {
+        randomNumber();
+
+    }
+
+    newGame();
+
+    // After user guesses correctly secret Number they can START A NEW GAME
+    //ACTION: add functionality to button New Game : Reset all variable  
+    //function newGame(); 
+    // this function inside an other function that runs the entire game 
+
+
+    // DONE : Generate Random Number from 1 to 100 -- inside a function
+
+    function randomNumber() {
+        secretNumber = Math.floor((Math.random() * 100) + 1);
+        console.log(secretNumber);
+        return secretNumber;
+    }
+
+
     // DONE : Fetch the value of input with Id = userGuess
     function guess() {
 
         // Returns the userGuess
-
         userGuess = $('#userGuess').val();
+        console.log(userGuess);
 
         //Resets the input value 
         $('#userGuess').val('');
 
-        if(checkInput()) {
-        	return ;
+        //checks for valid inputs
+        if (checkInput()) {
+            return;
         }
 
+        //gives feedback on hot & cold 
+        getFeedback();
+
+        return userGuess;
 
 
     }
-    // this is the current guess value 
-    guess();
 
- 
     // DONE : Add validation for the input : make sure that is 
     function checkInput() {
         // for inputs that are not between 1 - 100
@@ -80,13 +94,24 @@ $(document).ready(function() {
     }
 
 
-    // if input is === secret number ??
+// DONE: Gives user feedback if they are getting hot or cold.
+    function getFeedback() {
+        gapNumber = Math.abs(secretNumber - userGuess);
 
-    // The player gets feedback for each guess – "hot" 
-    //if their guess was close, and "cold" if their guess was far 
-    // Conditional statement with a range of number  --have inside a Name Function()
-    // ranges : 30-50 cold, 20-30 warm, 1-10 very hot. Modify them accordingly
-    //feedback should be displayed in h2#feedback
+        if (secretNumber == userGuess) {
+            alert("you win!");
+        } else if (gapNumber <= 10 && gapNumber >= 1) {
+            alert('you are very hot');
+        } else if (gapNumber <= 20 && gapNumber >= 11) {
+            alert('you are hot');
+        } else if (gapNumber <= 30 && gapNumber >= 21) {
+            alert('you are warm');
+        } else if (gapNumber <= 49 && gapNumber >= 39) {
+            alert(' you are cold');
+        } else {
+            alert('you are very cold');
+        }
+    }
 
 
     // function that counts how many guess the user has tried for current game 
@@ -97,10 +122,7 @@ $(document).ready(function() {
     // store guesses in : an array
 
 
-    // After user guesses correctly secret Number they can START A NEW GAME
-    //ACTION: add functionality to button New Game : Reset all variable  
-    //function newGame(); 
-    // this function inside an other function that runs the entire game 
+
 
 
 
